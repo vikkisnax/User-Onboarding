@@ -1,9 +1,15 @@
 import React, {useState, useEffect} from "react";
 import * as yup from 'yup';
 import axios from "axios";
+// import styled from 'styled-components';
+
+// //STRETCH - styling
+// const WrapperDiv = styled.div`
+//   font-family: sans-serif;
+//   text-align: center;
+// `;
 
 const Form = props => {
-
 //state to hold user info/keys
 const [formState, setFormState]= useState({
     firstName: "",
@@ -17,8 +23,8 @@ const [formState, setFormState]= useState({
 //submit - control whether or not the form can be submitted if there are errors in form validation (in the useEffect)
 const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
 
-//server error
-// const [serverError, setServerError] = useState("");
+//server error -- uncomment after you make the .catch to let user know there's a server error
+const [serverError, setServerError] = useState("");
 
 //managing state for errors. empty unless inline validation (validateInput) updates key/value pair to have error. expects object {}
 const [errors, setErrors] = useState({
@@ -30,7 +36,7 @@ const [errors, setErrors] = useState({
     terms: "",   
 });
 
-//temporary state for API response- not usually used - to display response from API - array 
+//temporary state for API response- not usually used (bc of <pre>) - to display response from API - array 
 const [post, setPost] = useState([]);
 
 
@@ -60,6 +66,7 @@ const validateChange = (e) => {
 
 
 // ONSUBMIT FUNCTION - button - DO LATER
+    //1:46:56 vid for .post
 const formSubmit = (e) => {
     e.preventDefault();
     //do axios .post .then
@@ -69,10 +76,27 @@ const formSubmit = (e) => {
         .post("https://reqres.in/api/users", formState)
         .then((resp) =>{
             //update state w/ API value to display in <pre>. make state to hold this info 
+                //see what response is 
+                // console.log(resp);
+            //response object aka info in form that was sent and created inside the api
             setPost(resp.data);
+            //clears form after submit
+            setFormState({
+                firstName: "",
+                lastName: "",
+                email: "",
+                password: "",
+                // checkbox \/
+                terms: false,  
+            })
+        //let user know if there's a server error. look at codesandbox. don't see anything rn 
+        .catch((err) => {
+            setServerError("There's an error from the server :(")
+        })
+
     })
 }
-//1:46:56 vid for .post
+
 
 
 
@@ -108,7 +132,7 @@ const formSchema = yup.object().shape({
 
 // VALIDATE ENTIRE FORM - when form state changes - compare against formSchema. returns promise. 
 useEffect(()=> { 
-    console.log(formState);
+    // console.log(formState);
     formSchema.isValid(formState).then((valid, test)=>{
         console.log('test:', test)
         console.log('is vaild?', valid);
@@ -118,11 +142,10 @@ useEffect(()=> {
 
 
 
-return(
-    //add onSubmit={formSubmit}
-    <form>
+return( 
+    <form onSubmit={formSubmit}>
+        {/* <WrapperDiv> */}
         {/* add other code here for last part {serverError}..... */}
-
         <label htmlFor="firstName">
             First Name
             <input
@@ -137,9 +160,9 @@ return(
           <p className="error">{errors.firstName}</p>
         ) : null}
         </label>
-
+        <p>
         <label htmlFor="lastName">
-            Last Name
+            Last Name 
             <input
                 id="lastName"
                 type="text"
@@ -152,9 +175,9 @@ return(
           <p className="error">{errors.lastName}</p>
         ) : null}
         </label>
-
+        </p>
         <label htmlFor="email">
-            Email
+            Email 
             <input
                 id="email"
                 type="text"
@@ -167,9 +190,9 @@ return(
           <p className="error">{errors.email}</p>
         ) : null}
         </label>
-
+        <p>
         <label htmlFor="password">
-            Password
+            Password 
             <input
                 id= "password"
                 type="password"
@@ -182,7 +205,7 @@ return(
           <p className="error">{errors.password}</p>
         ) : null}
         </label>
-
+        </p>
         {/* CHECKBOX */}
         <label htmlFor="terms" className="terms">
             Terms and Conditions
@@ -203,10 +226,11 @@ return(
         <button type="submit" disabled={buttonIsDisabled}>
             Submit
         </button>
-
-        {/* add other code here for last part <pre>..... */}
+        {/* add other code here for last part <pre>.... this updates info from the server that you typed into the form below the form after you submit. doesn't store multiple form submissions */}
+        <pre>{JSON.stringify(post, null, 2)}</pre>
     </form>
-     );
+
+    );
 }
 
 export default Form;
