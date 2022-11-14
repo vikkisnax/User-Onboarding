@@ -1,14 +1,43 @@
 import React, {useState, useEffect} from "react";
 import * as yup from 'yup';
 import axios from "axios";
-// import styled from 'styled-components';
+import styled from 'styled-components';
 
 // //STRETCH - styling
-// const WrapperDiv = styled.div`
-//   font-family: sans-serif;
-//   text-align: center;
-// `;
+const WrapperForm = styled.form`
+display: flex;
+flex-direction: column;
+max-width: 300px;
+margin: 0 auto;
+color: #3D550C;
+`;
 
+const LabelSpace = styled.label`
+display: inline-block;
+text-align: left;
+line-height: 40px;
+`;
+
+const InputSpace = styled.input`
+display: inline-block;
+float: right;
+line-height: 10px;
+`;
+
+const SelectSpace = styled.select`
+display: inline-block;
+float: right;
+line-height: 10px;
+`
+
+const CheckBoxSpace = styled.label`
+text-align: center;
+margin-left: 50px;
+padding-bottom: 10px;
+font-weight: bold;
+`
+
+//CODE
 const Form = props => {
 //state to hold user info/keys
 const [formState, setFormState]= useState({
@@ -16,8 +45,10 @@ const [formState, setFormState]= useState({
     lastName: "",
     email: "",
     password: "",
+    // STRETCH - added for checkbox 
+    positions:"", 
     // checkbox \/
-    terms: false,   
+    terms: false 
 });
 
 //submit - control whether or not the form can be submitted if there are errors in form validation (in the useEffect)
@@ -32,8 +63,10 @@ const [errors, setErrors] = useState({
     lastName: "",
     email: "",
     password: "",
+    // STRETCH - added for checkbox 
+    positions:"", 
     // checkbox \/ string error too
-    terms: "",   
+    terms: ""   
 });
 
 //temporary state for API response- not usually used (bc of <pre>) - to display response from API - array 
@@ -86,8 +119,10 @@ const formSubmit = (e) => {
                 lastName: "",
                 email: "",
                 password: "",
+                // STRETCH - added for checkbox 
+                positions:"", 
                 // checkbox \/
-                terms: false,  
+                terms: false
             })
         //let user know if there's a server error. look at codesandbox. don't see anything rn 
         .catch((err) => {
@@ -126,7 +161,10 @@ const formSchema = yup.object().shape({
     // //.email or .required?
     email: yup.string().email("Must provide email."),
     password:yup.string().required("Must provide password.").min(6, "Password must be 6 characters minimum"),
-    // //boolean bc it's t/f
+    // STRETCH - added for checkbox 
+    positions: yup
+    .string().required("Please select a position"),
+    //boolean bc it's t/f
     terms: yup.boolean().oneOf([true], "Must check box")
 });
 
@@ -143,12 +181,12 @@ useEffect(()=> {
 
 
 return( 
-    <form onSubmit={formSubmit}>
-        {/* <WrapperDiv> */}
+    <WrapperForm onSubmit={formSubmit}>
+
         {/* add other code here for last part {serverError}..... */}
-        <label htmlFor="firstName">
+        <LabelSpace htmlFor="firstName">
             First Name
-            <input
+            <InputSpace
                 id="firstName"
                 type="text"
                 name="firstName"
@@ -159,11 +197,11 @@ return(
             {errors.firstName.length > 0 ? (
           <p className="error">{errors.firstName}</p>
         ) : null}
-        </label>
-        <p>
-        <label htmlFor="lastName">
+        </LabelSpace>
+        
+        <LabelSpace htmlFor="lastName">
             Last Name 
-            <input
+            <InputSpace
                 id="lastName"
                 type="text"
                 name="lastName"
@@ -174,11 +212,11 @@ return(
             {errors.lastName.length > 0 ? (
           <p className="error">{errors.lastName}</p>
         ) : null}
-        </label>
-        </p>
-        <label htmlFor="email">
+        </LabelSpace>
+      
+        <LabelSpace htmlFor="email">
             Email 
-            <input
+            <InputSpace
                 id="email"
                 type="text"
                 name="email"
@@ -189,11 +227,11 @@ return(
             {errors.email.length > 0 ? (
           <p className="error">{errors.email}</p>
         ) : null}
-        </label>
-        <p>
-        <label htmlFor="password">
+        </LabelSpace>
+     
+        <LabelSpace htmlFor="password">
             Password 
-            <input
+            <InputSpace
                 id= "password"
                 type="password"
                 name="password"
@@ -204,12 +242,35 @@ return(
             {errors.password.length > 0 ? (
           <p className="error">{errors.password}</p>
         ) : null}
-        </label>
-        </p>
+        </LabelSpace>
+       
+
+        {/* STRETCH - dropdown */}
+        <LabelSpace htmlFor="positions" className="positions">
+        Position
+        <SelectSpace
+        id="positions"
+        name="positions"
+        value={formState.positions}
+        onChange={inputChange}
+        >
+            <option value="">--Choose One--</option>
+          {/*e.target.value is value in <option> NOT <select>*/}
+          <option value="Student">Student</option>
+          <option value="FrontEnd">Front-End</option>
+          <option value="BackEnd">Back-End</option>
+          <option value="Administrative Work">Administrative Work</option>
+        </SelectSpace>
+        {/* for error msg to show up if any errors */}
+        {errors.positions.length > 0 ? (
+          <p className="error">{errors.positions}</p>
+        ) : null}
+        </LabelSpace>
+
+
         {/* CHECKBOX */}
-        <label htmlFor="terms" className="terms">
-            Terms and Conditions
-            <input
+        <CheckBoxSpace htmlFor="terms" className="terms">
+            <InputSpace
                 type="checkbox"
                 id="terms"
                 name="terms"
@@ -217,19 +278,22 @@ return(
                 checked={formState.terms} 
                 onChange={inputChange}
             />
+            Terms and Conditions
+       
             {/* add errors.name at the end */}
             {errors.terms.length > 0 ? (
           <p className="error">{errors.terms}</p>
         ) : null}
-        </label>
+        </CheckBoxSpace>
+       
 
         <button type="submit" disabled={buttonIsDisabled}>
             Submit
         </button>
         {/* add other code here for last part <pre>.... this updates info from the server that you typed into the form below the form after you submit. doesn't store multiple form submissions */}
         <pre>{JSON.stringify(post, null, 2)}</pre>
-    </form>
-
+    {/* </form> */}
+    </WrapperForm>
     );
 }
 

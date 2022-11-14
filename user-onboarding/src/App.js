@@ -4,11 +4,10 @@ import styled from 'styled-components';
 
 //STRETCH - styling
 const WrapperDiv = styled.div`
-display: flex;
-flex-direction: column;
-width: 90%;
-max-width: 300px;
-margin: 0 auto;
+  background: papayawhip;
+  width: 100%;
+  height: 100vh;
+  padding-top: 40px;
 `;
 
 function App() {
