@@ -132,10 +132,6 @@ const formSubmit = (e) => {
     })
 }
 
-
-
-
-
 // ONCHANGE FUNCTION
 const inputChange = (e) => {
     //bc passing event asyncronusly - bc of error msg too- read notes
@@ -182,7 +178,7 @@ useEffect(()=> {
 
 return( 
     <WrapperForm onSubmit={formSubmit}>
-
+        <h1>User Onboarding Form</h1>
         {/* add other code here for last part {serverError}..... */}
         <LabelSpace htmlFor="firstName">
             First Name
