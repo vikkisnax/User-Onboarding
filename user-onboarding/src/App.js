@@ -2,7 +2,7 @@ import './App.css';
 import Form from './Components/Form';
 import styled from 'styled-components';
 
-//STRETCH - styling
+//STRETCH - styling background
 const WrapperDiv = styled.div`
   background: papayawhip;
   width: 100%;

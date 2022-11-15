@@ -45,7 +45,7 @@ const [formState, setFormState]= useState({
     lastName: "",
     email: "",
     password: "",
-    // STRETCH - added for checkbox 
+    // STRETCH - added for dropdown 
     positions:"", 
     // checkbox \/
     terms: false 
@@ -63,7 +63,7 @@ const [errors, setErrors] = useState({
     lastName: "",
     email: "",
     password: "",
-    // STRETCH - added for checkbox 
+    // STRETCH - added for dropdown 
     positions:"", 
     // checkbox \/ string error too
     terms: ""   
@@ -119,7 +119,7 @@ const formSubmit = (e) => {
                 lastName: "",
                 email: "",
                 password: "",
-                // STRETCH - added for checkbox 
+                // STRETCH - added for dropdown 
                 positions:"", 
                 // checkbox \/
                 terms: false
@@ -157,7 +157,7 @@ const formSchema = yup.object().shape({
     // //.email or .required?
     email: yup.string().email("Must provide email."),
     password:yup.string().required("Must provide password.").min(6, "Password must be 6 characters minimum"),
-    // STRETCH - added for checkbox 
+    // STRETCH - added for dropdown 
     positions: yup
     .string().required("Please select a position"),
     //boolean bc it's t/f
