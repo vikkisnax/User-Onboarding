@@ -188,6 +188,8 @@ return(
                 name="firstName"
                 value={formState.firstName}
                 onChange={inputChange}
+                // Cypress assignment
+                data-cy="firstName" 
             />
             {/* add errors.name at the end */}
             {errors.firstName.length > 0 ? (
@@ -218,6 +220,8 @@ return(
                 name="email"
                 value={formState.email}
                 onChange={inputChange} 
+                // Cypress assignment
+                data-cy="email"
             />
             {/* add errors.name at the end */}
             {errors.email.length > 0 ? (
@@ -233,6 +237,8 @@ return(
                 name="password"
                 value={formState.password}
                 onChange={inputChange}
+                //cypress assignment
+                data-cy="password"
             />
             {/* add errors.name at the end */}
             {errors.password.length > 0 ? (
