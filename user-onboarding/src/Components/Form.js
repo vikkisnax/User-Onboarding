@@ -124,12 +124,11 @@ const formSubmit = (e) => {
                 // checkbox \/
                 terms: false
             })
+        })
         //let user know if there's a server error. look at codesandbox. don't see anything rn 
         .catch((err) => {
             setServerError("There's an error from the server :(")
         })
-
-    })
 }
 
 // ONCHANGE FUNCTION
